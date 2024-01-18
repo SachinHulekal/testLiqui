@@ -3,6 +3,7 @@ package testLiqui;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Map;
 import java.util.Properties;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -15,20 +16,21 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.FileSystemResourceAccessor;
 
 // Handler value: example.HandlerInteger
-public abstract class testClass implements RequestHandler<String, String>{
+public class testClass implements RequestHandler<Map<String,String>, String>{
   /*
    * Takes in an InputRecord, which contains two integers and a String.
    * Logs the String, then returns the sum of the two Integers.
    */
 	private static final String CHANGELOG_PATH = "C:/test/testLiqui/src/resource/changelog.sql";
-
-	public String handleRequest(String[] args, Context context) {
+	
+	@Override
+	public String handleRequest(Map<String,String> event, Context context) {
 		try {
 			Properties props = new Properties();
 			FileInputStream fis = new FileInputStream("C:/test/testLiqui/src/resource/db.properties");
 			props.load(fis);
 			fis.close();
-
+            
 			String url = props.getProperty("url");
 			String username = props.getProperty("username");
 			String password = props.getProperty("password");
@@ -44,12 +46,13 @@ public abstract class testClass implements RequestHandler<String, String>{
 	        	    database 
 	        	);
 	        liquibase.update( "" );
-	        return "true";
+	       
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return CHANGELOG_PATH;
+		return null;
+		
 
 	}
 }
