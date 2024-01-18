@@ -15,14 +15,14 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.FileSystemResourceAccessor;
 
 // Handler value: example.HandlerInteger
-public abstract class testClass implements RequestHandler<Integer, String>{
+public abstract class testClass implements RequestHandler<String, String>{
   /*
    * Takes in an InputRecord, which contains two integers and a String.
    * Logs the String, then returns the sum of the two Integers.
    */
-   public String CHANGELOG_PATH = "C:/test/testLiqui/src/resource/changelog.sql";
+	private static final String CHANGELOG_PATH = "C:/test/testLiqui/src/resource/changelog.sql";
 
-	public void handleRequest(String[] args) {
+	public String handleRequest(String[] args, Context context) {
 		try {
 			Properties props = new Properties();
 			FileInputStream fis = new FileInputStream("C:/test/testLiqui/src/resource/db.properties");
@@ -44,10 +44,12 @@ public abstract class testClass implements RequestHandler<Integer, String>{
 	        	    database 
 	        	);
 	        liquibase.update( "" );
+	        return "true";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return CHANGELOG_PATH;
 
 	}
 }
