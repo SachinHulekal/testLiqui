@@ -25,7 +25,7 @@ public class testClass implements RequestHandler<Map<String, String>, Void> {
 			logger.log("EVENT TYPE: " + event.getClass());
 			logger.log("Sachin it is wokring");
 			Properties props = new Properties();
-			FileInputStream fis = new FileInputStream("C:/test/testLiqui/src/resources/db.properties");
+			FileInputStream fis = new FileInputStream("C:\\test\\testLiqui\\src\\resources\\db.properties");
 			props.load(fis);
 			fis.close();
 
