@@ -4,18 +4,15 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-import java.util.List;
+import java.util.Map;
 
-// Handler value: example.HandlerList
-public class testClass implements RequestHandler<List<Integer>, Integer> {
+// Handler value: example.Handler
+public class testClass implements RequestHandler<Map<String, String>, Void> {
 
 	@Override
-	/*
-	 * Takes a list of Integers and returns its sum.
-	 */
-	public Integer handleRequest(List<Integer> event, Context context) {
+	public Void handleRequest(Map<String, String> event, Context context) {
 		LambdaLogger logger = context.getLogger();
-		logger.log("EVENT TYPE: " + event.getClass().toString());
-		return event.stream().mapToInt(Integer::intValue).sum();
+		logger.log("EVENT TYPE: " + event.getClass());
+		return null;
 	}
 }
