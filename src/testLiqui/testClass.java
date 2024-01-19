@@ -36,7 +36,7 @@ public class testClass implements RequestHandler<Map<String, String>, Void> {
 			Database database = DatabaseFactory.getInstance()
 					.findCorrectDatabaseImplementation(new JdbcConnection(con));
 			try (Liquibase liquibase = new Liquibase(
-					"C:/test/testLiqui/src/resources/db.properties/changelog.sql",
+					"C:/test/testLiqui/src/resources/changelog.sql",
 					new FileSystemResourceAccessor(),
 					database)) {
 				liquibase.update("");
