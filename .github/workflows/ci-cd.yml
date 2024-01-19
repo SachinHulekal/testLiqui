@@ -23,7 +23,7 @@ jobs:
           aws-region: ap-south-1
       - name: Create AWS Lambda Function
         run: |
-          aws lambda create-function --function-name testClass --runtime java17 --handler testLiqui.testClass::handleRequest --role arn:aws:iam::730335235156:role/lamdaTest --zip-file fileb://target/testLiqui-0.0.1-SNAPSHOT.jar
+          aws lambda create-function --function-name testClass --runtime java17 --handler testLiqui.testClass::handleRequest --role arn:aws:iam::730335235156:role/lamdaTest --zip-file fileb://target/testLiqui-0.0.1-SNAPSHOT-shaded.jar
         continue-on-error: true
       - name: Update Lambda Function
-        run: aws lambda update-function-code --function-name testClass --zip-file fileb://target/testLiqui-0.0.1-SNAPSHOT.jar
+        run: aws lambda update-function-code --function-name testClass --zip-file fileb://target/testLiqui-0.0.1-SNAPSHOT-shaded.jar
