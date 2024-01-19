@@ -18,11 +18,27 @@ import liquibase.resource.FileSystemResourceAccessor;
 
 // Handler value: example.HandlerInteger
 public class testClass implements RequestHandler<Map<String, String>, Void> {
-	  @Override
-	  public Void handleRequest(Map<String,String> event, Context context)
-	  {
-	    LambdaLogger logger = context.getLogger();
-	    logger.log("EVENT TYPE: " + event.getClass());
-	    return null;
-	  }
+	@Override
+	public Void handleRequest(Map<String, String> event, Context context) {
+		try {
+			LambdaLogger logger = context.getLogger();
+			logger.log("EVENT TYPE: " + event.getClass());
+			logger.log("Sachin it is wokring");
+			Properties props = new Properties();
+			FileInputStream fis = new FileInputStream("C:/test/testLiqui/src/resources/db.properties");
+			props.load(fis);
+			fis.close();
+
+			String url = props.getProperty("url");
+			String username = props.getProperty("username");
+			String password = props.getProperty("password");
+
+			Connection con = DriverManager.getConnection(url, username, password);
+			logger.log("con");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
