@@ -32,7 +32,9 @@ public class testClass implements RequestHandler<Map<String, String>, Void> {
 			String url = props.getProperty("url");
 			String username = props.getProperty("username");
 			String password = props.getProperty("password");
-
+			System.out.println(url);
+			System.out.println(password);
+			System.out.println(username);
 			Connection con = DriverManager.getConnection(url, username, password);
 			logger.log("con");
 		} catch (Exception e) {
