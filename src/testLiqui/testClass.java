@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import liquibase.Liquibase;
@@ -36,11 +35,12 @@ public class testClass implements RequestHandler<Map<String, String>, Void> {
 
 			Database database = DatabaseFactory.getInstance()
 					.findCorrectDatabaseImplementation(new JdbcConnection(con));
-			Liquibase liquibase = new Liquibase(
+			try (Liquibase liquibase = new Liquibase(
 					"C:/test/testLiqui/src/resources/db.properties/changelog.sql",
 					new FileSystemResourceAccessor(),
-					database);
-			liquibase.update("");
+					database)) {
+				liquibase.update("");
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
