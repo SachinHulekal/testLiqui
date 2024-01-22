@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,30 +20,35 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.FileSystemResourceAccessor;
 
 // Handler value: example.HandlerInteger
-public class testClass implements RequestHandler<Map<String, String>, Void> {
-	@Override
-	public Void handleRequest(Map<String, String> event, Context context) {
-		try {
-			LambdaLogger logger = context.getLogger();
-			logger.log("EVENT TYPE: " + event.getClass());
-			logger.log("Sachin it is wokring");
-			Properties props = new Properties();
-			InputStream fis = testClass.class.getClassLoader().getResourceAsStream("db.properties");
-			props.load(fis);
-			fis.close();
+public class testClass {
+	public String handleRequest(Context context) {
+		LambdaLogger logger = context.getLogger();
+		logger.log("Invoked JDBCSample.getCurrentTime");
 
-			String url = props.getProperty("url");
-			String username = props.getProperty("username");
-			String password = props.getProperty("password");
-			System.out.println(url);
-			System.out.println(password);
-			System.out.println(username);
-			Connection con = DriverManager.getConnection(url, username, password);
-			logger.log("con");
+		String currentTime = "unavailable";
+
+		// Get time from DB server
+		try {
+			String url = "jdbc:postgresql://database-1.c9yewug28hvf.ap-south-1.rds.amazonaws.com:5434/postgres";
+			String username = "postgres";
+			String password = "postgres";
+
+			Connection conn = DriverManager.getConnection(url, username, password);
+			Statement stmt = conn.createStatement();
+			ResultSet resultSet = stmt.executeQuery("SELECT NOW()");
+
+			if (resultSet.next()) {
+				currentTime = resultSet.getObject(1).toString();
+			}
+
+			logger.log("Successfully executed query.  Result: " + currentTime);
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.log("Caught exception: " + e.getMessage());
 		}
-		return null;
+
+		return currentTime;
+
 	}
 }
