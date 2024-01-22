@@ -1,9 +1,7 @@
 package testLiqui;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class testClass implements RequestHandler<Map<String, String>, Void> {
 			logger.log("EVENT TYPE: " + event.getClass());
 			logger.log("Sachin it is wokring");
 			Properties props = new Properties();
-			BufferedReader fis = new BufferedReader(new FileReader(new File("classpath:db.properties")));
+			InputStream fis = testClass.class.getClassLoader().getResourceAsStream("db.properties");
 			props.load(fis);
 			fis.close();
 
