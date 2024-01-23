@@ -44,17 +44,6 @@ public class testClass {
 			System.out.println(username);
 			System.out.println(url);
 
-			Connection con = DriverManager.getConnection(url, username, password);
-			System.out.println(con);
-
-			Database database = DatabaseFactory.getInstance()
-					.findCorrectDatabaseImplementation(new JdbcConnection(con));
-			Liquibase liquibase = new Liquibase(
-					"C:/test/testLiqui/src/resources/db.properties/changelog.sql",
-					new FileSystemResourceAccessor(),
-					database);
-			liquibase.update("");
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.log("Caught exception: " + e.getMessage());
