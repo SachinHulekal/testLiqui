@@ -31,13 +31,18 @@ public class testClass {
 		try {
 
 			Properties props = new Properties();
-			InputStream fis = testClass.class.getClassLoader().getResourceAsStream("C:/test/testLiqui/src/resources/db.properties");
+			InputStream fis = testClass.class.getClassLoader()
+					.getResourceAsStream("C:/test/testLiqui/src/resources/db.properties");
 			props.load(fis);
 			fis.close();
 
 			String url = props.getProperty("url");
 			String username = props.getProperty("username");
 			String password = props.getProperty("password");
+
+			System.out.println(password);
+			System.out.println(username);
+			System.out.println(url);
 
 			Connection con = DriverManager.getConnection(url, username, password);
 			System.out.println(con);
