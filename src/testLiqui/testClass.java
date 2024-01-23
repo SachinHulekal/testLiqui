@@ -29,19 +29,26 @@ public class testClass {
 
 		// Get time from DB server
 		try {
-			String url = "jdbc:postgresql://database-1.c9yewug28hvf.ap-south-1.rds.amazonaws.com:5434/postgres";
-			String username = "postgres";
-			String password = "postgres";
 
-			Connection conn = DriverManager.getConnection(url, username, password);
-			Statement stmt = conn.createStatement();
-			ResultSet resultSet = stmt.executeQuery("SELECT NOW()");
+			Properties props = new Properties();
+			InputStream fis = testClass.class.getClassLoader().getResourceAsStream("C:/test/testLiqui/src/resources/db.properties");
+			props.load(fis);
+			fis.close();
 
-			if (resultSet.next()) {
-				currentTime = resultSet.getObject(1).toString();
-			}
+			String url = props.getProperty("url");
+			String username = props.getProperty("username");
+			String password = props.getProperty("password");
 
-			logger.log("Successfully executed query.  Result: " + currentTime);
+			Connection con = DriverManager.getConnection(url, username, password);
+			System.out.println(con);
+
+			Database database = DatabaseFactory.getInstance()
+					.findCorrectDatabaseImplementation(new JdbcConnection(con));
+			Liquibase liquibase = new Liquibase(
+					"C:/test/testLiqui/src/resources/db.properties/changelog.sql",
+					new FileSystemResourceAccessor(),
+					database);
+			liquibase.update("");
 
 		} catch (Exception e) {
 			e.printStackTrace();
